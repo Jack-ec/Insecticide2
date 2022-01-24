@@ -19,8 +19,8 @@ public class Snake extends Enemy {
 
 		super(tm);
 
-		moveSpeed = 0.3;
-		maxSpeed = 0.3;
+		moveSpeed = 0.1;
+		maxSpeed = 0.1;
 		fallSpeed = 0.2;
 		maxFallSpeed = 10.0;
 
@@ -70,11 +70,11 @@ public class Snake extends Enemy {
 		PlayerPosition = playerposition;
 		PlayerVector = playervector;
 		
-		if (x - playerposition <= 100 && x - playerposition >= -100) {
-			if (x - playerposition <= 100 && x - playerposition >= 0) {
+		if (x - playerposition <= 150 && x - playerposition >= -150) {
+			if (x - playerposition <= 150 && x - playerposition >= 0) {
 				facingRight = false;
 			}
-			if (x - playerposition >= -100 && x - playerposition <= 0) {
+			if (x - playerposition >= -150 && x - playerposition <= 0) {
 				facingRight = true;
 			}
 			return true;
@@ -87,13 +87,23 @@ public class Snake extends Enemy {
 
 	private void getNextPosition() {
 		// movement
-		if (isAlert(PlayerPosition, PlayerVector) == true && x > PlayerPosition) {
+		if (isAlert(PlayerPosition, PlayerVector) == true && x > PlayerPosition && PlayerVector > 0) {
 			dx = -PlayerVector;
 		}
 		
-		if (isAlert(PlayerPosition, PlayerVector) == true && x < PlayerPosition) {
+		if (isAlert(PlayerPosition, PlayerVector) == true && x < PlayerPosition && PlayerVector > 0) {
 			dx = PlayerVector;
 		}
+		
+		if (isAlert(PlayerPosition, PlayerVector) == true && x < PlayerPosition && PlayerVector < 0) {
+			dx = -PlayerVector;
+		}
+		
+		if (isAlert(PlayerPosition, PlayerVector) == true && x > PlayerPosition && PlayerVector < 0) {
+			dx = PlayerVector;
+		}
+		
+		
 		
 			// falling
 			if(falling) {
@@ -116,18 +126,6 @@ public class Snake extends Enemy {
 			if(elapsed > 400) {
 				flinching = false;
 			}
-		}
-
-		// if it hits a wall, go other direction
-		if(right && dx == 0) {
-			right = false;
-			left = true;
-			facingRight = false;
-		}
-		else if(left && dx == 0) {
-			right = true;
-			left = false;
-			facingRight = true;
 		}
 
 		// update animation
